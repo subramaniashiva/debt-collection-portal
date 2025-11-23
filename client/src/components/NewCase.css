@@ -1,0 +1,121 @@
+.new-case {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.new-case-header {
+  margin-bottom: 2rem;
+}
+
+.new-case-header h1 {
+  font-size: 2rem;
+  color: #1a202c;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #718096;
+  font-size: 1rem;
+}
+
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+}
+
+.form-container .card {
+  height: fit-content;
+}
+
+.form-input.error {
+  border-color: #f56565;
+}
+
+.error-message {
+  color: #f56565;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.help-text {
+  color: #718096;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.form-actions .btn {
+  flex: 1;
+}
+
+.info-card {
+  background-color: #f7fafc;
+}
+
+.info-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #2d3748;
+}
+
+.process-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.process-step {
+  display: flex;
+  gap: 1rem;
+}
+
+.step-number {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #3182ce;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-title {
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.25rem;
+}
+
+.step-description {
+  font-size: 0.85rem;
+  color: #718096;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    grid-template-columns: 1fr;
+  }
+
+  .info-card {
+    order: -1;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+}
