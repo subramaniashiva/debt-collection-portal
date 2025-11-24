@@ -20,18 +20,31 @@ app.use(express.json());
 
 // Serve static files from React build in production
 if (process.env.NODE_ENV === 'production') {
-  const buildPath = path.join(__dirname, '../client/build');
-  console.log('Looking for React build at:', buildPath);
-
-  // Check if build directory exists
   const fs = require('fs');
-  if (fs.existsSync(buildPath)) {
-    console.log('Build directory found!');
+
+  // Try different possible build paths
+  const possiblePaths = [
+    path.join(__dirname, '../client/build'),
+    path.join(process.cwd(), 'client/build'),
+    path.join(__dirname, '../../client/build')
+  ];
+
+  let buildPath = null;
+  for (const tryPath of possiblePaths) {
+    console.log('Checking path:', tryPath);
+    if (fs.existsSync(tryPath)) {
+      buildPath = tryPath;
+      console.log('✓ Build directory found at:', buildPath);
+      break;
+    }
+  }
+
+  if (buildPath) {
     app.use(express.static(buildPath));
   } else {
-    console.error('Build directory NOT found at:', buildPath);
-    console.log('Current directory:', __dirname);
-    console.log('Files in current directory:', fs.readdirSync(__dirname));
+    console.error('✗ Build directory NOT found in any expected location');
+    console.log('Current directory (__dirname):', __dirname);
+    console.log('Current working directory (cwd):', process.cwd());
   }
 }
 
@@ -392,14 +405,30 @@ Yours faithfully,
 
 // Serve React app for all other routes in production
 if (process.env.NODE_ENV === 'production') {
-  const indexPath = path.join(__dirname, '../client/build/index.html');
+  const fs = require('fs');
+
+  // Try different possible paths for index.html
+  const possibleIndexPaths = [
+    path.join(__dirname, '../client/build/index.html'),
+    path.join(process.cwd(), 'client/build/index.html'),
+    path.join(__dirname, '../../client/build/index.html')
+  ];
+
+  let indexPath = null;
+  for (const tryPath of possibleIndexPaths) {
+    if (fs.existsSync(tryPath)) {
+      indexPath = tryPath;
+      console.log('✓ Found index.html at:', indexPath);
+      break;
+    }
+  }
+
   app.get('*', (req, res) => {
-    res.sendFile(indexPath, (err) => {
-      if (err) {
-        console.error('Error serving index.html:', err);
-        res.status(500).send('Application is building. Please refresh in a moment.');
-      }
-    });
+    if (indexPath) {
+      res.sendFile(indexPath);
+    } else {
+      res.status(500).send('Application build not found. Please contact support.');
+    }
   });
 }
 
