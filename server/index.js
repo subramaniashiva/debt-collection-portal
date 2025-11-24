@@ -380,8 +380,14 @@ Yours faithfully,
 
 // Serve React app for all other routes in production
 if (process.env.NODE_ENV === 'production') {
+  const indexPath = path.join(__dirname, '../client/build/index.html');
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+    res.sendFile(indexPath, (err) => {
+      if (err) {
+        console.error('Error serving index.html:', err);
+        res.status(500).send('Application is building. Please refresh in a moment.');
+      }
+    });
   });
 }
 

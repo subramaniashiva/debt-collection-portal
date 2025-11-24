@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Automated debt collection workflow for property managers",
   "main": "server/index.js",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "server": "node server/index.js",
     "client": "cd client && PORT=7000 npm start",
