@@ -22,10 +22,29 @@ app.use(express.json());
 if (process.env.NODE_ENV === 'production') {
   const fs = require('fs');
 
+  // Debug: Show what's actually in the filesystem
+  console.log('=== DEBUGGING FILE STRUCTURE ===');
+  console.log('__dirname:', __dirname);
+  console.log('process.cwd():', process.cwd());
+
+  try {
+    console.log('\nContents of process.cwd():', fs.readdirSync(process.cwd()));
+    const clientPath = path.join(process.cwd(), 'client');
+    if (fs.existsSync(clientPath)) {
+      console.log('Contents of client dir:', fs.readdirSync(clientPath));
+      const buildPath = path.join(clientPath, 'build');
+      if (fs.existsSync(buildPath)) {
+        console.log('Contents of build dir:', fs.readdirSync(buildPath).slice(0, 10));
+      }
+    }
+  } catch (e) {
+    console.error('Debug error:', e.message);
+  }
+
   // Try different possible build paths
   const possiblePaths = [
-    path.join(__dirname, '../client/build'),
     path.join(process.cwd(), 'client/build'),
+    path.join(__dirname, '../client/build'),
     path.join(__dirname, '../../client/build')
   ];
 
@@ -43,8 +62,6 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(buildPath));
   } else {
     console.error('✗ Build directory NOT found in any expected location');
-    console.log('Current directory (__dirname):', __dirname);
-    console.log('Current working directory (cwd):', process.cwd());
   }
 }
 
