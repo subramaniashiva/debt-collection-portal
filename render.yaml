@@ -2,7 +2,18 @@ services:
   - type: web
     name: debt-collection-portal
     env: node
-    buildCommand: npm install && cd client && npm install && npm run build && cd ..
+    buildCommand: |
+      npm install &&
+      echo "Root dependencies installed" &&
+      cd client &&
+      npm install &&
+      echo "Client dependencies installed" &&
+      npm run build &&
+      echo "Build completed" &&
+      ls -la build &&
+      cd .. &&
+      echo "Files in project root:" &&
+      ls -la
     startCommand: npm start
     envVars:
       - key: NODE_ENV

@@ -20,7 +20,19 @@ app.use(express.json());
 
 // Serve static files from React build in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
+  const buildPath = path.join(__dirname, '../client/build');
+  console.log('Looking for React build at:', buildPath);
+
+  // Check if build directory exists
+  const fs = require('fs');
+  if (fs.existsSync(buildPath)) {
+    console.log('Build directory found!');
+    app.use(express.static(buildPath));
+  } else {
+    console.error('Build directory NOT found at:', buildPath);
+    console.log('Current directory:', __dirname);
+    console.log('Files in current directory:', fs.readdirSync(__dirname));
+  }
 }
 
 // Helper function to generate case reference
